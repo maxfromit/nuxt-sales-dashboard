@@ -5,6 +5,8 @@ import {
   startOfMonth,
   endOfWeek,
   endOfMonth,
+  today,
+  getLocalTimeZone,
 } from '@internationalized/date'
 import type { Range, CalendarRange } from '~/types'
 
@@ -22,6 +24,8 @@ const reset = () => {
 const emit = defineEmits<{
   (e: 'apply-date-range', range: Range): void
 }>()
+
+const calendarToday = today(getLocalTimeZone())
 
 //computed to calculate today and compare it with the end of week/month to limit end dates in predefined range
 const predefinedRanges = computed(() => [
