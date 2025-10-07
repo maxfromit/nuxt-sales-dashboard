@@ -8,6 +8,6 @@ export type Range = {
 }
 
 export type CalendarRange = {
-  start: CalendarDate | undefined
-  end: CalendarDate | undefined
+  start: CalendarDate | null
+  end: CalendarDate | null
 }
