@@ -13,8 +13,8 @@ import {
 import type { Range, CalendarRange } from '~/types'
 
 const selected = ref<CalendarRange>({
-  start: null,
-  end: null,
+  start: undefined,
+  end: undefined,
 })
 
 const emit = defineEmits<{
