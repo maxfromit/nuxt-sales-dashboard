@@ -1,4 +1,3 @@
-import type { Sales } from '~/server/utils'
 import type { Range } from '~/types'
 import l from 'lodash'
 
