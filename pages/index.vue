@@ -7,7 +7,7 @@ import DashboardPanel from '~/components/DashboardPanel.vue'
     <header class="p-4 sm:px-6 flex flex-row items-center justify-between">
       <div class="flex flex-row items-center gap-2">
         <UIcon name="i-lucide-chart-no-axes-column" class="text-secondary" />
-        <div class="text-xl font-semibold">Dashboard</div>
+        <div class="text-xl font-semibold">Продажи</div>
       </div>
       <ThemeSettingsDropdown />
     </header>
@@ -16,24 +16,4 @@ import DashboardPanel from '~/components/DashboardPanel.vue'
 
     <DashboardPanel />
   </div>
-
-  <!-- <UCard
-    :ui="{
-      body: 'flex-1 flex flex-col',
-      root: 'flex-1',
-    }"
-    class="flex-1 flex flex-col"
-  >
-    <template #header>
-      <div class="flex flex-row items-center justify-between">
-        <div class="text-xl font-semibold">Dashboard</div>
-        <ThemeSettingsDropdown />
-      </div>
-    </template>
-
-    <DashboardPanel />
-     <template #footer>
-      <Placeholder class="h-8" />
-    </template> 
-  </UCard> -->
 </template>
