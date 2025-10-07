@@ -5,6 +5,8 @@ const querySchema = z.object({
   endDate: z.iso.date().optional(),
 })
 
+export type Query = z.infer<typeof querySchema>
+
 export default defineEventHandler(async (event) => {
   const queryResult = await getValidatedQuery(event, (query) =>
     querySchema.safeParse(query)
