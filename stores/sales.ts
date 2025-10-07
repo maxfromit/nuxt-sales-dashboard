@@ -22,7 +22,7 @@ export const useSalesStore = defineStore('sales', () => {
     })
     isLoading.value = false
     sales.value = data?.sales || []
-    console.log('sales after', sales.value)
+    // console.log('sales after', sales.value)
   }
 
   return { sales: sales, fetchSales, isLoading }
