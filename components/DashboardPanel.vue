@@ -1,28 +1,22 @@
 <script setup lang="ts">
 import { storeToRefs } from 'pinia'
-import type { CalendarRange } from '~/types'
+import type { Range } from '~/types'
 
 const store = useSalesStore()
 const { isLoading, sales } = storeToRefs(store)
 
-const calendarRange = ref<CalendarRange>({
-  start: null,
-  end: null,
-})
-
 await callOnce(() => store.fetchSales())
 
-const refetchSales = () => store.fetchSales(calendarRange.value)
+const fetchSales = (range: Range) => {
+  store.fetchSales(range)
+}
 </script>
 
 <template>
   <div class="flex flex-1 flex-col">
     <div class="p-4 sm:px-6">
       <div class="flex flex-col">
-        <DateRangePicker
-          v-model="calendarRange"
-          @apply-date-range="refetchSales()"
-        />
+        <DateRangePicker @apply-date-range="fetchSales" />
       </div>
     </div>
     <USeparator />

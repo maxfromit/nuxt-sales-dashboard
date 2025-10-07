@@ -1,21 +1,18 @@
-import type { Sales } from '~/server/api/sales'
-import type { CalendarRange } from '~/types'
+import type { Sales } from '~/server/utils'
+import type { Range } from '~/types'
 
 export const useSalesStore = defineStore('sales', () => {
   const sales = ref<Sales>([])
   const isLoading = ref(false)
 
-  const fetchSales = async (dateRange?: CalendarRange) => {
-    console.log('fetchSales called with', dateRange)
+  const fetchSales = async (dateRange?: Range) => {
     isLoading.value = true
     const data = await $fetch('/api/sales', {
       query: {
         ...(dateRange
           ? {
-              ...(dateRange?.start
-                ? { startDate: dateRange.start.toString() }
-                : {}),
-              ...(dateRange?.end ? { endDate: dateRange.end.toString() } : {}),
+              ...(dateRange.start ? { startDate: dateRange.start } : {}),
+              ...(dateRange.end ? { endDate: dateRange.end } : {}),
             }
           : {}),
       },

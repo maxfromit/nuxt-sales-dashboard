@@ -12,12 +12,13 @@ import {
 } from '@internationalized/date'
 import type { Range, CalendarRange } from '~/types'
 
-const selected = defineModel<CalendarRange>({
-  required: true,
+const selected = ref<CalendarRange>({
+  start: null,
+  end: null,
 })
 
 const emit = defineEmits<{
-  (e: 'apply-date-range'): void
+  (e: 'apply-date-range', range: Range): void
 }>()
 
 const predefinedRanges = [
@@ -47,18 +48,12 @@ const selectRange = (range: PredefinedRange) => {
   }
 }
 
-const resetToInitial = () => {
-  selected.value = {
-    start: null,
-    end: null,
+const emitRangeToString = () => {
+  const rangeToString = {
+    start: selected.value?.start?.toString() ?? null,
+    end: selected.value?.end?.toString() ?? null,
   }
-}
-
-const onRangeUpdate = (newValue: CalendarRange | null) => {
-  if (!newValue?.start && !newValue?.end) {
-    resetToInitial()
-  }
-  emit('apply-date-range')
+  emit('apply-date-range', rangeToString)
 }
 </script>
 
@@ -110,17 +105,7 @@ const onRangeUpdate = (newValue: CalendarRange | null) => {
           v-model="selected"
           class="p-2"
           range
-          :ui="{
-            cellTrigger: 'cursor-pointer data-disabled:cursor-not-allowed ',
-          }"
-          @update:model-value="
-            (val) => {
-              if (!val?.start && !val?.end) {
-                resetToInitial()
-              }
-              emit('apply-date-range')
-            }
-          "
+          @update:model-value="emitRangeToString"
         />
       </div>
     </template>
