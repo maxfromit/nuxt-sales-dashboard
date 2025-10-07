@@ -105,7 +105,7 @@ const backboneOptions = computed((): ApexOptions => {
   <ApexChart
     :series="series"
     type="line"
-    :height="250"
+    :height="dashboardChartHeight"
     :options="backboneOptions"
     :loading="loading"
   />

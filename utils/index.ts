@@ -7,3 +7,5 @@ export const calendarToday = today(getLocalTimeZone())
 export const ruLocale = 'ru-RU'
 
 export const sortSalesByDate = (sales: Sales) => l.sortBy(sales, 'date')
+
+export const dashboardChartHeight = 250
