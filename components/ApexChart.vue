@@ -5,16 +5,11 @@ import l from 'lodash'
 import ru from 'apexcharts/dist/locales/ru.json'
 
 const props = defineProps<{
-  series?: ApexOptions['series']
-  categories?: string[]
-  options: Partial<ApexOptions>
   type: NonNullable<ApexOptions['chart']>['type']
+  series: ApexOptions['series']
   height: VueApexChartsComponent['height']
-  styles?: string
-  width?: VueApexChartsComponent['width']
-  colors?: string[]
+  options: Partial<ApexOptions>
   loading?: boolean
-  title?: string
 }>()
 
 const colorMode = useColorMode()
@@ -63,9 +58,12 @@ const getDefaultOptions = (themeMode?: ApexThemeMode): ApexOptions => ({
       right: 60,
     },
   },
+
   stroke: {
+    width: 1,
     curve: 'smooth',
   },
+
   yaxis: {
     title: {
       style: {
@@ -90,9 +88,9 @@ const mergedOptions = computed(() =>
     <VueApexCharts
       ref="apexChartInstance"
       :type="type"
+      :series="series"
       :height="height"
       :options="mergedOptions"
-      :series="series"
     />
 
     <div v-if="loading" class="absolute inset-0 z-10">
