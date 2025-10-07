@@ -51,16 +51,6 @@ pnpm preview
 
 Sale type (from `types/index.ts`):
 
-```ts
-type Sale = {
-  id: number
-  date: string // YYYY-MM-DD
-  amount: number
-  category: string
-  customer_id: number
-}
-```
-
 If query parsing fails the server logs the issue and returns the full dataset (unfiltered).
 
 ## Features & implementation notes
