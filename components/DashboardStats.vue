@@ -1,10 +1,42 @@
 <script setup lang="ts">
+import l from 'lodash'
 import type { Stats } from '~/components/DashboardPanel.vue'
 
 const props = defineProps<{
   stats: Stats
   isLoading: boolean
 }>()
+
+// Determine corner classes for grid items on lg screens (grid-cols-4)
+const getCornerClasses = (index: number) => {
+  let classes = ''
+  const statsCount = l.size(props.stats)
+  const itemsInLastRow = statsCount % 4
+  const firstIndexLastRow = statsCount - itemsInLastRow
+  const lastIndexLastRow = statsCount - 1
+
+  // first row corner top left
+  if ((index + 1) % 4 === 1 && index <= 3) {
+    classes = 'lg:rounded-none lg:rounded-tl-lg'
+  }
+  // first row corner top right
+  if ((index + 1) % 4 === 0 && index <= 3)
+    classes = classes + ' ' + 'lg:rounded-none lg:rounded-tr-lg'
+
+  // last row corner bottom left
+  if (firstIndexLastRow === index)
+    classes = classes + ' ' + 'lg:rounded-none lg:rounded-bl-lg'
+
+  // 1. last row corner bottom right
+  // 2. row before last corner bottom right if last row has less than 4 items
+  if (
+    lastIndexLastRow === index ||
+    (itemsInLastRow < 4 && index === firstIndexLastRow - 1)
+  )
+    classes = classes + ' ' + 'lg:rounded-none lg:rounded-br-lg'
+
+  return l.isEmpty(classes) ? 'lg:rounded-none' : classes
+}
 </script>
 
 <template>
@@ -14,7 +46,8 @@ const props = defineProps<{
     <div
       v-for="(stat, index) in stats"
       :key="index"
-      class="lg:rounded-none first:rounded-l-lg last:rounded-r-lg items-start relative flex rounded-lg bg-elevated/50 ring ring-default"
+      class="rounded-lg items-start relative flex bg-elevated/50 ring ring-default"
+      :class="getCornerClasses(index)"
     >
       <div
         class="gap-y-1.5 relative flex flex-col flex-1 gap-x-8 p-4 sm:p-6 justify-items-start"
@@ -23,7 +56,7 @@ const props = defineProps<{
           :icon="stat.icon"
           size="xl"
           :ui="{ icon: 'size-4 text-primary' }"
-          class="rounded-full bg-primary/10 ring ring-inset ring-primary/25"
+          class="bg-primary/10 ring ring-inset ring-primary/25"
         />
         <div class="font-normal text-muted text-xs uppercase text-pretty">
           {{ stat.label }}
