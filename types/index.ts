@@ -1,4 +1,4 @@
-import type { CalendarDate, DateValue } from '@internationalized/date'
+import type { CalendarDate } from '@internationalized/date'
 
 export type Period = 'daily' | 'weekly' | 'monthly'
 
@@ -10,4 +10,12 @@ export type CalendarRange = {
 export type Range = {
   start: string | null
   end: string | null
+}
+
+export type Sale = {
+  id: number
+  date: string
+  amount: number
+  category: string
+  customer_id: number
 }
