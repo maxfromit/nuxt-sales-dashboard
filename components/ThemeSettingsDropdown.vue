@@ -3,7 +3,21 @@ import type { DropdownMenuItem } from '@nuxt/ui'
 import l from 'lodash'
 
 const colorMode = useColorMode()
+
+const state = useLocalStorage('appearance', {
+  primary: 'blue',
+  secondary: 'violet',
+})
 const appConfig = useAppConfig()
+
+watch(
+  () => state,
+  (newState) => {
+    appConfig.ui.colors.primary = newState.value.primary
+    appConfig.ui.colors.secondary = newState.value.secondary
+  },
+  { immediate: true, deep: true }
+)
 
 const colors = [
   { label: 'Синий', value: 'blue' },
@@ -29,46 +43,34 @@ const items = computed<DropdownMenuItem[][]>(() => [
       children: [
         {
           label: 'Главный',
-          slot: 'chip',
-          chip: appConfig.ui.colors.primary,
           content: {
             align: 'center',
             collisionPadding: 16,
           },
           children: l.map(colors, (color) => ({
             label: color.label,
-            chip: color.value,
-            slot: 'chip',
-            checked: appConfig.ui.colors.primary === color.value,
+            checked: state.value.primary === color.value,
             type: 'checkbox',
             onSelect: (e) => {
               e.preventDefault()
-
-              appConfig.ui.colors.primary = color.value
+              state.value.primary = color.value
             },
           })),
         },
         {
           label: 'Вторичный',
-          slot: 'chip',
-          chip:
-            appConfig.ui.colors.neutral === 'neutral'
-              ? 'old-neutral'
-              : appConfig.ui.colors.neutral,
+
           content: {
             align: 'end',
             collisionPadding: 16,
           },
           children: l.map(secondaries, (color) => ({
             label: color.label,
-            chip: color.value,
-            slot: 'chip',
             type: 'checkbox',
-            checked: appConfig.ui.colors.secondary === color.value,
+            checked: state.value.secondary === color.value,
             onSelect: (e) => {
               e.preventDefault()
-
-              appConfig.ui.colors.secondary = color.value
+              state.value.secondary = color.value
             },
           })),
         },
@@ -94,13 +96,10 @@ const items = computed<DropdownMenuItem[][]>(() => [
           icon: 'i-lucide-moon',
           type: 'checkbox',
           checked: colorMode.value === 'dark',
-          onUpdateChecked(checked: boolean) {
-            if (checked) {
-              colorMode.preference = 'dark'
-            }
-          },
           onSelect(e: Event) {
             e.preventDefault()
+
+            colorMode.preference = 'dark'
           },
         },
       ],
@@ -110,6 +109,7 @@ const items = computed<DropdownMenuItem[][]>(() => [
 </script>
 
 <template>
+  state {{ state }}
   <UDropdownMenu
     :items="items"
     :content="{
