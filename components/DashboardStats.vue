@@ -59,12 +59,12 @@ const getCornerClasses = (index: number) => {
           class="bg-primary/10 ring ring-inset ring-primary/25"
         />
         <div class="font-normal text-muted text-xs uppercase text-pretty">
-          {{ stat.label }}
+          {{ stat?.label }}
         </div>
         <div class="text-2xl font-semibold text-highlighted">
           {{
             !loading
-              ? `${stat.prefix ? `${stat.prefix} ` : ''}${stat.value}`
+              ? `${stat.prefix ? `${stat.prefix} ` : ''}${stat.value ?? 0}`
               : '...'
           }}
         </div>
