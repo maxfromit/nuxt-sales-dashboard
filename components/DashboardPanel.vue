@@ -1,23 +1,9 @@
 <script setup lang="ts">
 import { storeToRefs } from 'pinia'
-import type { Period, Range, CalendarRange } from '~/types'
-import l from 'lodash'
-import {
-  type CalendarDate,
-  today,
-  getLocalTimeZone,
-  parseDate,
-} from '@internationalized/date'
+import type { CalendarRange } from '~/types'
 
 const store = useSalesStore()
 const { isLoading, sales } = storeToRefs(store)
-
-const range = ref<Range>({
-  start: new Date(),
-  end: new Date(),
-})
-const minDate = ref<CalendarDate | null>(null)
-const maxDate = ref<CalendarDate | null>(null)
 
 const calendarRange = ref<CalendarRange>({
   start: null,
