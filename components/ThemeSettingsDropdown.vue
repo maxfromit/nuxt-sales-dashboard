@@ -1,59 +1,55 @@
 <script setup lang="ts">
 import type { DropdownMenuItem } from '@nuxt/ui'
+import l from 'lodash'
 
 const colorMode = useColorMode()
 const appConfig = useAppConfig()
 
 const colors = [
-  'red',
-  'orange',
-  'amber',
-  'yellow',
-  'lime',
-  'green',
-  'emerald',
-  'teal',
-  'cyan',
-  'sky',
-  'blue',
-  'indigo',
-  'violet',
-  'purple',
-  'fuchsia',
-  'pink',
-  'rose',
+  { label: 'Синий', value: 'blue' },
+  { label: 'Красный', value: 'red' },
+  { label: 'Зелёный', value: 'green' },
+  { label: 'Янтарный', value: 'amber' },
+  { label: 'Бирюзовый', value: 'teal' },
 ]
-const secondaries = ['slate', 'gray', 'zinc', 'neutral', 'stone', 'violet']
+
+const secondaries = [
+  { label: 'Фиолетовый', value: 'violet' },
+  { label: 'Нейтральный', value: 'neutral' },
+  { label: 'Желтый', value: 'yellow' },
+  { label: 'Пурпурный', value: 'purple' },
+  { label: 'Лаймовый', value: 'lime' },
+]
 
 const items = computed<DropdownMenuItem[][]>(() => [
   [
     {
-      label: 'Theme',
+      label: 'Цвета проекта',
       icon: 'i-lucide-palette',
       children: [
         {
-          label: 'Primary',
+          label: 'Главный',
           slot: 'chip',
           chip: appConfig.ui.colors.primary,
           content: {
             align: 'center',
             collisionPadding: 16,
           },
-          children: colors.map((color) => ({
-            label: color,
-            chip: color,
+          children: l.map(colors, (color) => ({
+            label: color.label,
+            chip: color.value,
             slot: 'chip',
-            checked: appConfig.ui.colors.primary === color,
+            checked: appConfig.ui.colors.primary === color.value,
             type: 'checkbox',
             onSelect: (e) => {
               e.preventDefault()
 
-              appConfig.ui.colors.primary = color
+              appConfig.ui.colors.primary = color.value
             },
           })),
         },
         {
-          label: 'Secondary',
+          label: 'Вторичный',
           slot: 'chip',
           chip:
             appConfig.ui.colors.neutral === 'neutral'
@@ -63,27 +59,27 @@ const items = computed<DropdownMenuItem[][]>(() => [
             align: 'end',
             collisionPadding: 16,
           },
-          children: secondaries.map((color) => ({
-            label: color,
-            chip: color === 'secondary' ? 'old-secondary' : color,
+          children: l.map(secondaries, (color) => ({
+            label: color.label,
+            chip: color.value,
             slot: 'chip',
             type: 'checkbox',
-            checked: appConfig.ui.colors.secondary === color,
+            checked: appConfig.ui.colors.secondary === color.value,
             onSelect: (e) => {
               e.preventDefault()
 
-              appConfig.ui.colors.secondary = color
+              appConfig.ui.colors.secondary = color.value
             },
           })),
         },
       ],
     },
     {
-      label: 'Appearance',
+      label: 'Тема',
       icon: 'i-lucide-sun-moon',
       children: [
         {
-          label: 'Light',
+          label: 'Светлая',
           icon: 'i-lucide-sun',
           type: 'checkbox',
           checked: colorMode.value === 'light',
@@ -94,7 +90,7 @@ const items = computed<DropdownMenuItem[][]>(() => [
           },
         },
         {
-          label: 'Dark',
+          label: 'Темная',
           icon: 'i-lucide-moon',
           type: 'checkbox',
           checked: colorMode.value === 'dark',
