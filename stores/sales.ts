@@ -1,5 +1,6 @@
 import type { Sales } from '~/server/utils'
 import type { Range } from '~/types'
+import l from 'lodash'
 
 export const useSalesStore = defineStore('sales', () => {
   const sales = ref<Sales>([])
@@ -22,5 +23,41 @@ export const useSalesStore = defineStore('sales', () => {
     // console.log('sales after', sales.value)
   }
 
-  return { sales: sales, fetchSales, isLoading }
+  const stats = computed(() => {
+    const total = l.sumBy(sales.value, 'amount')
+    const count = l.size(sales.value)
+    const average = !!count && !!total ? l.round(total / count, 2) : null
+    const uniqueCustomers = l
+      .chain(sales.value)
+      .uniqBy('customer_id')
+      .size()
+      .value()
+
+    return [
+      {
+        label: 'Общий доход',
+        value: total ?? null,
+        prefix: '₽',
+        icon: 'i-lucide-badge-russian-ruble',
+      },
+      {
+        label: 'Количество заказов',
+        value: count ?? null,
+        icon: 'i-lucide-shopping-cart',
+      },
+      {
+        label: 'Средний чек',
+        value: average ?? null,
+        prefix: '₽',
+        icon: 'i-lucide-receipt-russian-ruble',
+      },
+      {
+        label: 'Уникальные пользователи',
+        value: uniqueCustomers ?? null,
+        icon: 'i-lucide-users-round',
+      },
+    ]
+  })
+
+  return { sales: sales, fetchSales, stats, isLoading }
 })
