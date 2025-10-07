@@ -1,7 +1,7 @@
 <script setup lang="ts">
-import l from 'lodash'
-import VueApexCharts, { type VueApexChartsComponent } from 'vue3-apexcharts'
 import type { ApexOptions } from 'apexcharts'
+import VueApexCharts, { type VueApexChartsComponent } from 'vue3-apexcharts'
+import l from 'lodash'
 import ru from 'apexcharts/dist/locales/ru.json'
 
 const props = defineProps<{
@@ -52,6 +52,11 @@ const getDefaultOptions = (themeMode?: ApexThemeMode): ApexOptions => ({
       }
     : {}),
 
+  markers: {
+    size: 1,
+    strokeColors: themeMode === 'dark' ? '#FFF' : '#f2f2f2',
+  },
+
   grid: {
     padding: {
       left: 30,
@@ -86,8 +91,6 @@ const mergedOptions = computed(() =>
       ref="apexChartInstance"
       :type="type"
       :height="height"
-      :width="width"
-      :style="styles"
       :options="mergedOptions"
       :series="series"
     />
