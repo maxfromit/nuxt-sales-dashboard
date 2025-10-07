@@ -10,6 +10,7 @@ const state = useLocalStorage('appearance', {
 })
 const appConfig = useAppConfig()
 
+// Update appConfig colors from  values saved in local storage
 watch(
   () => state,
   (newState) => {
@@ -59,7 +60,6 @@ const items = computed<DropdownMenuItem[][]>(() => [
         },
         {
           label: 'Вторичный',
-
           content: {
             align: 'end',
             collisionPadding: 16,
@@ -76,6 +76,7 @@ const items = computed<DropdownMenuItem[][]>(() => [
         },
       ],
     },
+
     {
       label: 'Тема',
       icon: 'i-lucide-sun-moon',
@@ -87,7 +88,6 @@ const items = computed<DropdownMenuItem[][]>(() => [
           checked: colorMode.value === 'light',
           onSelect(e: Event) {
             e.preventDefault()
-
             colorMode.preference = 'light'
           },
         },
@@ -98,7 +98,6 @@ const items = computed<DropdownMenuItem[][]>(() => [
           checked: colorMode.value === 'dark',
           onSelect(e: Event) {
             e.preventDefault()
-
             colorMode.preference = 'dark'
           },
         },
