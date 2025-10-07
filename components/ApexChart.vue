@@ -22,26 +22,6 @@ const theme = computed(() => colorMode.preference)
 
 const apexChartInstance = ref<VueApexChartsComponent | null>(null)
 
-// const mainOptions = computed<ApexOptions>(() => ({
-
-//   legend: {
-//     position: 'bottom',
-//     markers: {
-//       radius: 4,
-//     },
-//   },
-
-//   plotOptions: {
-//     bar: {
-//       borderRadius: 4,
-//       borderRadiusApplication: 'end',
-//     },
-//   },
-//   dataLabels: {
-//     enabled: true,
-//   },
-// }))
-
 type ApexThemeMode = NonNullable<ApexOptions['theme']>['mode']
 
 const getDefaultOptions = (themeMode?: ApexThemeMode): ApexOptions => ({
@@ -92,14 +72,6 @@ const getDefaultOptions = (themeMode?: ApexThemeMode): ApexOptions => ({
   },
 })
 
-// const adjustByMainCurrentOptions = computed(() =>
-//   l.merge(l.cloneDeep(props.options), mainOptions.value)
-// )
-
-// const mergedOptions = computed(() =>
-//   l.merge(l.cloneDeep(defaultOptions), adjustByMainCurrentOptions.value)
-// )
-
 const mergedOptions = computed(() =>
   l.merge(
     l.cloneDeep(props.options),
@@ -125,3 +97,9 @@ const mergedOptions = computed(() =>
     </div>
   </div>
 </template>
+
+<style scoped>
+:deep(.apexcharts-tooltip) {
+  border: 1px solid var(--ui-secondary) !important;
+}
+</style>
