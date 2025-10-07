@@ -4,7 +4,7 @@ import type { Stats } from '~/components/DashboardPanel.vue'
 
 const props = defineProps<{
   stats: Stats
-  isLoading: boolean
+  loading: boolean
 }>()
 
 // Determine corner classes for grid items on lg screens (grid-cols-4)
@@ -63,7 +63,7 @@ const getCornerClasses = (index: number) => {
         </div>
         <div class="text-2xl font-semibold text-highlighted">
           {{
-            !isLoading
+            !loading
               ? `${stat.prefix ? `${stat.prefix} ` : ''}${stat.value}`
               : '...'
           }}

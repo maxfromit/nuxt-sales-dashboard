@@ -4,10 +4,10 @@ import l from 'lodash'
 
 export const useSalesStore = defineStore('sales', () => {
   const sales = ref<Sales>([])
-  const isLoading = ref(false)
+  const loading = ref(false)
 
   const fetchSales = async (dateRange?: Range) => {
-    isLoading.value = true
+    loading.value = true
     const data = await $fetch('/api/sales', {
       query: {
         ...(dateRange
@@ -18,7 +18,7 @@ export const useSalesStore = defineStore('sales', () => {
           : {}),
       },
     })
-    isLoading.value = false
+    loading.value = false
     sales.value = data?.sales || []
     // console.log('sales after', sales.value)
   }
@@ -59,5 +59,5 @@ export const useSalesStore = defineStore('sales', () => {
     ]
   })
 
-  return { sales: sales, fetchSales, stats, isLoading }
+  return { sales: sales, fetchSales, stats, loading }
 })
