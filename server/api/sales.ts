@@ -1,6 +1,7 @@
 import { type CalendarDate, parseDate } from '@internationalized/date'
 import l from 'lodash'
 import { sortSalesByDate } from '~/utils'
+
 const salesData = [
   {
     id: 1,
@@ -112,23 +113,20 @@ export default defineEventHandler(async (event) => {
   const query = getQuery(event)
 
   if (query && (query.startDate || query.endDate)) {
-    if (
-      (query.startDate && !l.isString(query.startDate)) ||
-      (query.endDate && !l.isString(query.endDate))
-    )
+    try {
+      if (query?.startDate) {
+        parseDate(query.startDate as string)
+      }
+      if (query?.endDate) {
+        parseDate(query.endDate as string)
+      }
+    } catch (error) {
       throw createError({
         statusCode: 400,
-        statusMessage: 'Invalid date format',
+        statusMessage: (error as Error)?.message,
       })
-
-    const parsedstartDate = query?.startDate
-      ? parseDate(query.startDate as string)
-      : null
-    const parsedendDate = query?.endDate
-      ? parseDate(query.endDate as string)
-      : null
+    }
   }
-  //   console.log('sales before', sales)
 
   await new Promise((resolve) => {
     setTimeout(() => {
