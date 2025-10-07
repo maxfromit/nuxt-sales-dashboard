@@ -1,10 +1,6 @@
 <script setup lang="ts">
-import l, { last } from 'lodash'
+import l from 'lodash'
 import {
-  type CalendarDate,
-  DateFormatter,
-  getLocalTimeZone,
-  today,
   startOfWeek,
   startOfMonth,
   endOfWeek,
@@ -64,13 +60,17 @@ const isPredefinedRangeSelected = (range: PredefinedRange) => {
   )
 }
 
-const emitRangeToString = () => {
-  const rangeToString = {
-    start: selected.value?.start?.toString() ?? null,
-    end: selected.value?.end?.toString() ?? null,
-  }
-  emit('apply-date-range', rangeToString)
-}
+watch(
+  () => selected.value,
+  () => {
+    const rangeToString = {
+      start: selected.value?.start?.toString() ?? null,
+      end: selected.value?.end?.toString() ?? calendarToday.toString(),
+    }
+    emit('apply-date-range', rangeToString)
+  },
+  { immediate: true, deep: true }
+)
 </script>
 
 <template>
@@ -85,12 +85,15 @@ const emitRangeToString = () => {
         <template v-if="!selected?.start && !selected?.end"
           >Весь период</template
         >
-        <RuNuxtTime
-          v-if="selected?.start?.copy()"
-          :datetime="selected?.start?.copy().toString()"
-        />
-        <template v-if="selected?.end">
-          - <RuNuxtTime :datetime="selected?.end.toString()" />
+        <template v-else>
+          <RuNuxtTime
+            v-if="selected?.start?.copy()"
+            :datetime="selected?.start?.copy().toString()"
+          />
+          -
+          <RuNuxtTime
+            :datetime="selected?.end?.toString() ?? calendarToday.toString()"
+          />
         </template>
       </span>
 
@@ -126,7 +129,10 @@ const emitRangeToString = () => {
           v-model="selected"
           class="p-2"
           range
-          @update:model-value="emitRangeToString"
+          :max-value="calendarToday.copy()"
+          :ui="{
+            cellTrigger: 'cursor-pointer data-disabled:cursor-not-allowed ',
+          }"
         />
       </div>
 
