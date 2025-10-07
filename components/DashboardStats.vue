@@ -8,6 +8,7 @@ const props = defineProps<{
 }>()
 
 // Determine corner classes for grid items on lg screens (grid-cols-4)
+// it will be needed when stats cards became more than 4
 const getCornerClasses = (index: number) => {
   let classes = ''
   const statsCount = l.size(props.stats)
