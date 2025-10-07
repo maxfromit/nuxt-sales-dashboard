@@ -1,14 +1,14 @@
 <script setup lang="ts">
-import { storeToRefs } from 'pinia'
 import type { Range } from '~/types'
+import { storeToRefs } from 'pinia'
 import l from 'lodash'
 
 const store = useSalesStore()
 const { loading, sales, stats } = storeToRefs(store)
 
-await callOnce(() => store.fetchSales())
-
 export type Stats = typeof stats.value
+
+await callOnce(() => store.fetchSales())
 
 const fetchSales = (range: Range) => {
   store.fetchSales(range)
@@ -33,6 +33,7 @@ const fetchSales = (range: Range) => {
     </div>
 
     <div class="flex flex-col gap-4 sm:gap-6 flex-1 overflow-y-auto p-4 sm:p-6">
+      <!--Stats collapse for mobile screens -->
       <UCollapsible class="sm:hidden">
         <UButton
           label="Статистика"
@@ -52,7 +53,9 @@ const fetchSales = (range: Range) => {
         </template>
       </UCollapsible>
 
+      <!-- Stats for sm+ screens -->
       <DashboardStats :stats="stats" :loading="loading" class="max-sm:hidden" />
+
       <DashboardChart :loading="loading" :sales="sales" />
     </div>
   </div>
