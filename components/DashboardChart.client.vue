@@ -9,17 +9,25 @@ const props = defineProps<{
 }>()
 
 // create series paired values for each category as recommended in Apex Charts docs
-const series = computed(() => {
-  const groupedByCategory = l.groupBy(props.sales, 'category')
+// at first we group by category and then we sum amounts for each date in that category
 
-  return l.map(groupedByCategory, (items, category) => ({
-    name: category,
-    data: l.map(items, (item) => ({
-      x: item.date,
-      y: item.amount,
-    })),
-  }))
-})
+const series = computed(() =>
+  l
+    .chain(props.sales)
+    .groupBy('category')
+    .map((items, category) => ({
+      name: category,
+      data: l
+        .chain(items)
+        .groupBy('date')
+        .map((dateItems, date) => ({
+          x: date,
+          y: l.sumBy(dateItems, 'amount'),
+        }))
+        .value(),
+    }))
+    .value()
+)
 
 const uniqueDateEntries = computed(() =>
   l
@@ -32,8 +40,12 @@ const uniqueDateEntries = computed(() =>
 
 const options = computed((): ApexOptions => {
   return {
+    chart: {
+      id: 'sales',
+    },
     tooltip: {
       enabled: true,
+      shared: true,
     },
 
     xaxis: {
