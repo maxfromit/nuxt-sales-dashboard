@@ -1,5 +1,4 @@
 import l from 'lodash'
-import { sortSalesByDate } from '~/utils'
 import type { Query } from '~/server/api/sales'
 
 const salesData = [
@@ -329,9 +328,8 @@ type Sales = typeof salesData
 
 const filterSales = (startDate?: string | null, endDate?: string | null) => {
   if (!startDate && !endDate) return salesData
-  const sorted = sortSalesByDate(salesData)
 
-  return l.filter(sorted, (sale: Sales[number]) => {
+  return l.filter(salesData, (sale: Sales[number]) => {
     if (startDate && sale.date < startDate) return false
     if (endDate && sale.date > endDate) return false
     return true
@@ -341,7 +339,9 @@ const filterSales = (startDate?: string | null, endDate?: string | null) => {
 const fetchSales = async (query?: Query) => {
   let sales: Sales = []
   await new Promise((resolve) => {
+    // Simulate network delay
     setTimeout(() => {
+      // Fetch sales data based on query if query provided
       sales = query
         ? filterSales(
             l.isString(query?.startDate) ? query?.startDate : null,
@@ -349,9 +349,9 @@ const fetchSales = async (query?: Query) => {
           )
         : filterSales()
       resolve(true)
-    }, 1000)
+    }, 300)
   })
   return { sales }
 }
 
-export { type Sales, fetchSales }
+export { fetchSales }
