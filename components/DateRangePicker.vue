@@ -23,7 +23,8 @@ const emit = defineEmits<{
   (e: 'apply-date-range', range: Range): void
 }>()
 
-const predefinedRanges = [
+//computed to calculate today and compare it with the end of week/month to limit end dates in predefined range
+const predefinedRanges = computed(() => [
   {
     label: 'Сегодня',
     firstDay: calendarToday.copy(),
@@ -32,16 +33,22 @@ const predefinedRanges = [
   {
     label: 'Неделя',
     firstDay: startOfWeek(calendarToday, ruLocale).copy(),
-    lastDay: endOfWeek(calendarToday, ruLocale).copy(),
+    lastDay:
+      endOfWeek(calendarToday, ruLocale).compare(calendarToday) <= 0
+        ? endOfWeek(calendarToday, ruLocale).copy()
+        : calendarToday.copy(),
   },
   {
     label: 'Месяц',
     firstDay: startOfMonth(calendarToday).copy(),
-    lastDay: endOfMonth(calendarToday).copy(),
+    lastDay:
+      endOfMonth(calendarToday).compare(calendarToday) <= 0
+        ? endOfMonth(calendarToday).copy()
+        : calendarToday.copy(),
   },
-]
+])
 
-type PredefinedRange = (typeof predefinedRanges)[number]
+type PredefinedRange = (typeof predefinedRanges.value)[number]
 
 const selectRange = (range: PredefinedRange) => {
   if (isPredefinedRangeSelected(range)) return reset()
