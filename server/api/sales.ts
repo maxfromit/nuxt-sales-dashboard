@@ -1,28 +1,25 @@
-import { type CalendarDate, parseDate } from '@internationalized/date'
+import { z } from 'zod'
+
+const querySchema = z.object({
+  startDate: z.iso.date().optional(),
+  endDate: z.iso.date().optional(),
+})
 
 export default defineEventHandler(async (event) => {
-  //   let pending = false
-  const query = getQuery(event)
+  const queryResult = await getValidatedQuery(event, (query) =>
+    querySchema.safeParse(query)
+  )
 
-  if (query && (query.startDate || query.endDate)) {
-    try {
-      if (query?.startDate) {
-        parseDate(query.startDate as string)
-      }
-      if (query?.endDate) {
-        parseDate(query.endDate as string)
-      }
-    } catch (error) {
-      console.error(
-        'Error parsing date, returning initial data:',
-        (error as Error)?.message
-      )
-      const result = await fetchSales()
-      return result
-    }
+  if (!queryResult.success) {
+    console.error(
+      'Error parsing date, returning initial data:',
+      queryResult.error?.issues
+    )
+    const result = await fetchSales()
+    return result
   }
 
-  const result = await fetchSales(query)
+  const result = await fetchSales(queryResult.data)
 
   return result
 })
