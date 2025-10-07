@@ -109,7 +109,6 @@ const items = computed<DropdownMenuItem[][]>(() => [
 </script>
 
 <template>
-  state {{ state }}
   <UDropdownMenu
     :items="items"
     :content="{
