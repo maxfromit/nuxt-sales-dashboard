@@ -32,30 +32,55 @@ export const useSalesStore = defineStore('sales', () => {
       .size()
       .value()
 
-    return [
+    //create an object with these values to reference values by values[key]
+    const values = { total, count, average, uniqueCustomers }
+
+    type StatKey = keyof typeof values
+
+    type StatItem = {
+      key: StatKey
+      label: string
+      value: number | null | string
+      prefix?: string
+      icon: string
+    }
+
+    // Define the stats backbone with null values to be easy filled with dash if no sales data
+    const statsBackbone: StatItem[] = [
       {
+        key: 'total',
         label: 'Общий доход',
-        value: total ?? null,
+        value: null,
         prefix: '₽',
         icon: 'i-lucide-badge-russian-ruble',
       },
       {
+        key: 'count',
         label: 'Количество заказов',
-        value: count ?? null,
+        value: null,
         icon: 'i-lucide-shopping-cart',
       },
       {
+        key: 'average',
         label: 'Средний чек',
-        value: average ?? null,
+        value: null,
         prefix: '₽',
         icon: 'i-lucide-receipt-russian-ruble',
       },
       {
+        key: 'uniqueCustomers',
         label: 'Уникальные пользователи',
-        value: uniqueCustomers ?? null,
+        value: null,
         icon: 'i-lucide-users-round',
       },
     ]
+
+    return l.map(statsBackbone, (stat) => {
+      return {
+        ...stat,
+        value: l.isEmpty(sales.value) ? '–' : values[stat.key],
+      }
+    })
   })
 
   return { sales: sales, fetchSales, stats, loading }
