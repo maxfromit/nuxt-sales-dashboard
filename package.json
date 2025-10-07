@@ -27,6 +27,8 @@
   },
   "devDependencies": {
     "@iconify-json/lucide": "^1.2.68",
-    "@types/lodash": "^4.17.20"
+    "@types/lodash": "^4.17.20",
+    "@vueuse/core": "^13.9.0",
+    "@vueuse/nuxt": "^13.9.0"
   }
 }
