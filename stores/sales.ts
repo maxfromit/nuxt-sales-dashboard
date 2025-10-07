@@ -1,8 +1,9 @@
-import type { Range } from '~/types'
+import type { Range, Sale } from '~/types'
+
 import l from 'lodash'
 
 export const useSalesStore = defineStore('sales', () => {
-  const sales = ref<Sales>([])
+  const sales = ref<Sale[]>([])
   const loading = ref(false)
 
   const fetchSales = async (dateRange?: Range) => {
@@ -19,7 +20,6 @@ export const useSalesStore = defineStore('sales', () => {
     })
     loading.value = false
     sales.value = data?.sales || []
-    // console.log('sales after', sales.value)
   }
 
   const stats = computed(() => {
@@ -32,7 +32,7 @@ export const useSalesStore = defineStore('sales', () => {
       .size()
       .value()
 
-    //create an object with these values to reference values by values[key]
+    //create an object with stat values to reference values by values[key]
     const values = { total, count, average, uniqueCustomers }
 
     type StatKey = keyof typeof values
