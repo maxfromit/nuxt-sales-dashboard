@@ -12,10 +12,16 @@ import {
 } from '@internationalized/date'
 import type { Range, CalendarRange } from '~/types'
 
-const selected = ref<CalendarRange>({
+const emptyRange = {
   start: undefined,
   end: undefined,
-})
+}
+
+const selected = ref<CalendarRange>({ ...emptyRange })
+
+const reset = () => {
+  selected.value = l.cloneDeep(emptyRange)
+}
 
 const emit = defineEmits<{
   (e: 'apply-date-range', range: Range): void
@@ -42,10 +48,20 @@ const predefinedRanges = [
 type PredefinedRange = (typeof predefinedRanges)[number]
 
 const selectRange = (range: PredefinedRange) => {
+  if (isPredefinedRangeSelected(range)) return reset()
   selected.value = {
     start: range.firstDay.copy(),
     end: range.lastDay.copy(),
   }
+}
+
+const isPredefinedRangeSelected = (range: PredefinedRange) => {
+  if (!selected.value?.start || !selected.value?.end) return false
+
+  return (
+    selected.value.start.compare(range.firstDay) === 0 &&
+    selected.value.end.compare(range.lastDay) === 0
+  )
 }
 
 const emitRangeToString = () => {
@@ -98,6 +114,11 @@ const emitRangeToString = () => {
             class="rounded-none px-4"
             truncate
             @click="selectRange(range)"
+            :class="[
+              isPredefinedRangeSelected(range)
+                ? 'underline-offset-4 underline decoration-secondary '
+                : 'hover:underline-offset-4 hover:underline hover:decoration-secondary',
+            ]"
           />
         </div>
 
@@ -106,6 +127,20 @@ const emitRangeToString = () => {
           class="p-2"
           range
           @update:model-value="emitRangeToString"
+        />
+      </div>
+
+      <USeparator />
+      <div class="flex flex-1 justify-center">
+        <UButton
+          v-if="selected?.start || selected?.end"
+          label="Сбросить"
+          icon="i-lucide-eraser"
+          variant="ghost"
+          color="neutral"
+          @click="reset()"
+          class="w-full"
+          :ui="{ base: 'flex flex-row  justify-center' }"
         />
       </div>
     </template>
