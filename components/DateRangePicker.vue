@@ -67,7 +67,7 @@ const emitRangeToString = () => {
     >
       <span class="truncate">
         <template v-if="!selected?.start && !selected?.end"
-          >Даты не выбраны</template
+          >Весь период</template
         >
         <RuNuxtTime
           v-if="selected?.start?.copy()"
