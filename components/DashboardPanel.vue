@@ -18,35 +18,14 @@ const range = ref<Range>({
 })
 const minDate = ref<CalendarDate | null>(null)
 const maxDate = ref<CalendarDate | null>(null)
-const calendarRange = ref<CalendarRange>(getTodayRange())
 
-await callOnce(() =>
-  store.fetchSales().then(() => {
-    console.log('Initial sales fetched', sales.value)
-    const sortedSalesByDate = sortSalesByDate(sales.value)
+const calendarRange = ref<CalendarRange>({
+  start: null,
+  end: null,
+})
 
-    console.log(
-      'Sorted sales by date:',
-      l.first(sortedSalesByDate),
-      l.last(sortedSalesByDate)
-    )
+await callOnce(() => store.fetchSales())
 
-    const firstDate = l.first(sortedSalesByDate)?.date
-    const lastDate = l.last(sortedSalesByDate)?.date
-
-    if (firstDate) {
-      minDate.value = parseDate(firstDate)
-      range.value.start = new Date(firstDate)
-      calendarRange.value.start = minDate.value.copy()
-    }
-    if (lastDate) {
-      maxDate.value = parseDate(lastDate)
-      range.value.end = new Date(lastDate)
-      calendarRange.value.end = maxDate.value.copy()
-      console.log('Last date set to', calendarRange.value.end)
-    }
-  })
-)
 const refetchSales = () => store.fetchSales(calendarRange.value)
 </script>
 
@@ -54,17 +33,17 @@ const refetchSales = () => store.fetchSales(calendarRange.value)
   <div class="flex flex-1 flex-col">
     <div class="p-4 sm:px-6">
       <div class="flex flex-col">
-        calendarRange {{ calendarRange?.start?.toString() }}
-        {{ calendarRange?.end?.toString() }}
         <DateRangePicker
           v-model="calendarRange"
-          :min-date="minDate"
-          :max-date="maxDate"
           @apply-date-range="refetchSales()"
         />
       </div>
     </div>
     <USeparator />
+
+    <div v-if="isLoading" class="p-4 text-sm text-muted-foreground">
+      Loading sales data...
+    </div>
 
     <div
       v-if="!isLoading && sales.length === 0"

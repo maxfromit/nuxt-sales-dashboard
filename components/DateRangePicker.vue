@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import l from 'lodash'
+import l, { last } from 'lodash'
 import {
   type CalendarDate,
   DateFormatter,
@@ -7,13 +7,10 @@ import {
   today,
   startOfWeek,
   startOfMonth,
+  endOfWeek,
+  endOfMonth,
 } from '@internationalized/date'
 import type { Range, CalendarRange } from '~/types'
-
-const props = defineProps<{
-  minDate: CalendarDate | null
-  maxDate: CalendarDate | null
-}>()
 
 const selected = defineModel<CalendarRange>({
   required: true,
@@ -24,33 +21,36 @@ const emit = defineEmits<{
 }>()
 
 const predefinedRanges = [
-  { label: 'Сегодня', firstDay: calendarToday.copy() },
-  { label: 'Неделя', firstDay: startOfWeek(calendarToday, ruLocale).copy() },
-  { label: 'Месяц', firstDay: startOfMonth(calendarToday).copy() },
+  {
+    label: 'Сегодня',
+    firstDay: calendarToday.copy(),
+    lastDay: calendarToday.copy(),
+  },
+  {
+    label: 'Неделя',
+    firstDay: startOfWeek(calendarToday, ruLocale).copy(),
+    lastDay: endOfWeek(calendarToday, ruLocale).copy(),
+  },
+  {
+    label: 'Месяц',
+    firstDay: startOfMonth(calendarToday).copy(),
+    lastDay: endOfMonth(calendarToday).copy(),
+  },
 ]
+
 type PredefinedRange = (typeof predefinedRanges)[number]
 
-const availableRanges = computed(() =>
-  predefinedRanges.filter((range) => {
-    if (!props.maxDate) return false
-    return range.firstDay.compare(props.maxDate) <= 0
-  })
-)
-
 const selectRange = (range: PredefinedRange) => {
-  if (!props.maxDate) return
-  const endDate =
-    props.maxDate.compare(calendarToday) <= 0 ? props.maxDate : calendarToday
   selected.value = {
     start: range.firstDay.copy(),
-    end: endDate.copy(),
+    end: range.lastDay.copy(),
   }
 }
 
 const resetToInitial = () => {
   selected.value = {
-    start: props.minDate ? props.minDate.copy() : getTodayRange().start.copy(),
-    end: props.maxDate ? props.maxDate.copy() : getTodayRange().end.copy(),
+    start: null,
+    end: null,
   }
 }
 
@@ -71,9 +71,15 @@ const onRangeUpdate = (newValue: CalendarRange | null) => {
       class="data-[state=open]:bg-elevated group"
     >
       <span class="truncate">
-        <RuNuxtTime v-if="selected?.start" :datetime="selected?.start" />
+        <template v-if="!selected?.start && !selected?.end"
+          >Даты не выбраны</template
+        >
+        <RuNuxtTime
+          v-if="selected?.start?.copy()"
+          :datetime="selected?.start?.copy().toString()"
+        />
         <template v-if="selected?.end">
-          - <RuNuxtTime :datetime="selected?.end" />
+          - <RuNuxtTime :datetime="selected?.end.toString()" />
         </template>
       </span>
 
@@ -87,12 +93,9 @@ const onRangeUpdate = (newValue: CalendarRange | null) => {
 
     <template #content>
       <div class="flex flex-col items-stretch divide-y divide-default">
-        <div
-          v-if="!l.isEmpty(availableRanges)"
-          class="p-2 sm:p-1 flex sm:flex-row justify-center sm:gap-4 gap-2"
-        >
+        <div class="p-2 sm:p-1 flex sm:flex-row justify-center sm:gap-4 gap-2">
           <UButton
-            v-for="(range, index) in availableRanges"
+            v-for="(range, index) in predefinedRanges"
             :key="index"
             :label="range.label"
             color="neutral"
@@ -107,8 +110,6 @@ const onRangeUpdate = (newValue: CalendarRange | null) => {
           v-model="selected"
           class="p-2"
           range
-          :min-value="minDate ?? undefined"
-          :max-value="maxDate ?? undefined"
           :ui="{
             cellTrigger: 'cursor-pointer data-disabled:cursor-not-allowed ',
           }"
