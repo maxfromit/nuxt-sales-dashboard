@@ -1,5 +1,6 @@
 import l from 'lodash'
 import { sortSalesByDate } from '~/utils'
+import type { Query } from '~/server/api/sales'
 
 const salesData = [
   {
@@ -92,7 +93,8 @@ const salesData = [
   },
   { id: 22, date: '2025-09-11', amount: 770, category: 'Книги', user_id: 6 },
 ]
-export type Sales = typeof salesData
+
+type Sales = typeof salesData
 
 const filterSales = (startDate?: string | null, endDate?: string | null) => {
   if (!startDate && !endDate) return salesData
@@ -105,7 +107,7 @@ const filterSales = (startDate?: string | null, endDate?: string | null) => {
   })
 }
 
-export const fetchSales = async (query?) => {
+const fetchSales = async (query?: Query) => {
   let sales: Sales = []
   await new Promise((resolve) => {
     setTimeout(() => {
@@ -120,3 +122,5 @@ export const fetchSales = async (query?) => {
   })
   return { sales }
 }
+
+export { type Sales, fetchSales }
