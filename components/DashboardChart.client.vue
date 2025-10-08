@@ -45,6 +45,8 @@ const series = computed(() =>
     .value()
 )
 
+const colorMode = useColorMode()
+const theme = computed(() => colorMode.preference)
 const options = computed((): ApexOptions => {
   return {
     chart: {
@@ -56,7 +58,20 @@ const options = computed((): ApexOptions => {
     },
 
     // hide marker if too much entries to avoid cluttering
-    ...(l.size(uniqueDateEntries.value) > 20 ? { markers: { size: 0 } } : {}),
+    ...(l.size(uniqueDateEntries.value) > 10
+      ? {}
+      : {
+          markers: {
+            // make marker bigger and brighter if only one date entry to make it more visible
+            ...(l.size(uniqueDateEntries.value) > 1
+              ? { size: 3 }
+              : {
+                  size: 5,
+                  colors: theme.value === 'dark' ? '#FFF' : '#c9c9c9',
+                  strokeColors: theme.value === 'dark' ? '#f9f9f9' : '#4f4f4f',
+                }),
+          },
+        }),
 
     xaxis: {
       type: 'datetime',
