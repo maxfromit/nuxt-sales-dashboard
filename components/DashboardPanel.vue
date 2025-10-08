@@ -17,10 +17,8 @@ const fetchSales = (range: Range) => {
 
 <template>
   <div class="flex flex-1 flex-col">
-    <div class="p-4 sm:px-6">
-      <div class="flex flex-col">
-        <DateRangePicker @apply-date-range="fetchSales" />
-      </div>
+    <div class="flex flex-row items-center p-4 sm:px-6">
+      <DateRangePicker @apply-date-range="fetchSales" />
     </div>
 
     <USeparator />
@@ -54,6 +52,7 @@ const fetchSales = (range: Range) => {
       </UCollapsible>
 
       <!-- Stats for sm+ screens -->
+
       <DashboardStats :stats="stats" :loading="loading" class="max-sm:hidden" />
 
       <DashboardChart :loading="loading" :sales="sales" />
