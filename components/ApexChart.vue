@@ -12,74 +12,73 @@ const props = defineProps<{
   loading?: boolean
 }>()
 
+const apexChartInstance = ref<VueApexChartsComponent | null>(null)
+
 const colorMode = useColorMode()
 const theme = computed(() => colorMode.preference)
 
-const apexChartInstance = ref<VueApexChartsComponent | null>(null)
-
-type ApexThemeMode = NonNullable<ApexOptions['theme']>['mode']
-
-const getDefaultOptions = (themeMode?: ApexThemeMode): ApexOptions => ({
-  chart: {
-    locales: [ru],
-    defaultLocale: 'ru',
-    type: props.type,
-    zoom: {
-      enabled: false,
-    },
-    animations: {
-      enabled: true,
-      speed: 500,
-      animateGradually: {
+const defaultOptions = computed(
+  (): ApexOptions => ({
+    chart: {
+      locales: [ru],
+      defaultLocale: 'ru',
+      type: props.type,
+      zoom: {
+        enabled: false,
+      },
+      animations: {
         enabled: true,
-        delay: 100,
-      },
-      dynamicAnimation: {
-        enabled: true,
-        speed: 250,
-      },
-    },
-  },
-
-  ...(!!themeMode
-    ? {
-        theme: { mode: themeMode },
-      }
-    : {}),
-
-  markers: {
-    hover: { sizeOffset: 3 },
-    size: 2,
-    strokeWidth: 1,
-    colors: themeMode === 'dark' ? '#f3f3f3' : '#FFF',
-    strokeColors: themeMode === 'dark' ? '#f9f9f9' : '#c1c1c1',
-  },
-
-  grid: {
-    padding: {
-      left: 30,
-      right: 60,
-    },
-  },
-
-  stroke: {
-    width: 1,
-    curve: 'smooth',
-  },
-
-  yaxis: {
-    title: {
-      style: {
-        fontSize: '10px',
-        fontWeight: 400,
-        cssClass: 'apexcharts-yaxis-title',
+        speed: 500,
+        animateGradually: {
+          enabled: true,
+          delay: 100,
+        },
+        dynamicAnimation: {
+          enabled: true,
+          speed: 250,
+        },
       },
     },
-  },
-})
+
+    ...(theme.value === 'dark' || theme.value === 'light'
+      ? {
+          theme: { mode: theme.value },
+        }
+      : {}),
+
+    markers: {
+      hover: { sizeOffset: 4 },
+      strokeWidth: 1,
+      colors: theme.value === 'dark' ? '#f3f3f3' : '#f1f1f1',
+      strokeColors: theme.value === 'dark' ? '#f9f9f9' : '#c1c1c1',
+    },
+
+    grid: {
+      padding: {
+        left: 30,
+        right: 60,
+      },
+    },
+
+    stroke: {
+      width: 1,
+      curve: 'smooth',
+    },
+
+    yaxis: {
+      title: {
+        style: {
+          fontSize: '10px',
+          fontWeight: 400,
+          cssClass: 'apexcharts-yaxis-title',
+        },
+      },
+    },
+  })
+)
 
 const mergedOptions = computed(() =>
-  l.merge({}, getDefaultOptions(theme.value as ApexThemeMode), props.options)
+  l.merge({}, defaultOptions.value, props.options)
 )
 
 const getHeightClass = computed(() =>
