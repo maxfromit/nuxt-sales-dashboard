@@ -4,4 +4,10 @@ export default defineNuxtConfig({
   devtools: { enabled: true },
   modules: ['@nuxt/eslint', '@nuxt/ui', '@pinia/nuxt', '@vueuse/nuxt'],
   css: ['~/assets/css/main.css'],
+
+  app: {
+    head: {
+      title: 'Продажи',
+    },
+  },
 })
