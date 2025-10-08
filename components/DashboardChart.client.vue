@@ -8,33 +8,40 @@ const props = defineProps<{
   sales: Sale[]
 }>()
 
-// create series paired values for each category as recommended in Apex Charts docs
-// at first we group by category and then we sum amounts for each date in that category
-
-const series = computed(() =>
-  l
-    .chain(props.sales)
-    .groupBy('category')
-    .map((items, category) => ({
-      name: category,
-      data: l
-        .chain(items)
-        .groupBy('date')
-        .map((dateItems, date) => ({
-          x: date,
-          y: l.sumBy(dateItems, 'amount'),
-        }))
-        .value(),
-    }))
-    .value()
-)
-
+// Unique data entries:
+// used to create x-axis categories for each date in the sales data
+// hide x-axis labels when there are fewer than 4 dates to avoid unnecessary labels.
 const uniqueDateEntries = computed(() =>
   l
     .chain(props.sales)
     .map((sale) => sale?.date)
-    .uniq()
-    .size()
+    .orderBy()
+    .sortedUniq()
+    .value()
+)
+
+// create series of paired values for each category, per the ApexCharts docs.
+// first group by category, then sum amounts for each uniqueDateEntries within that category.
+const series = computed(() =>
+  l
+    .chain(props.sales)
+    .groupBy('category')
+    .map((categoryItems, category) => {
+      const categoryItemsByDate = l.groupBy(categoryItems, 'date')
+
+      const pointsByDate = l.map(uniqueDateEntries.value, (date) => {
+        const itemsOnDate = l.get(categoryItemsByDate, date)
+        return {
+          x: date,
+          y: itemsOnDate ? l.sumBy(itemsOnDate, 'amount') : 0,
+        }
+      })
+
+      return {
+        name: category,
+        data: pointsByDate,
+      }
+    })
     .value()
 )
 
@@ -50,7 +57,7 @@ const options = computed((): ApexOptions => {
 
     xaxis: {
       type: 'datetime',
-      labels: { show: uniqueDateEntries.value > 3 ? true : false },
+      labels: { show: l.size(uniqueDateEntries.value) > 3 ? true : false },
     },
     yaxis: {
       labels: { show: true },
