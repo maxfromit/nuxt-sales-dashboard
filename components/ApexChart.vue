@@ -48,8 +48,11 @@ const getDefaultOptions = (themeMode?: ApexThemeMode): ApexOptions => ({
     : {}),
 
   markers: {
-    size: 1,
-    strokeColors: themeMode === 'dark' ? '#FFF' : '#f2f2f2',
+    hover: { sizeOffset: 3 },
+    size: 2,
+    strokeWidth: 1,
+    colors: themeMode === 'dark' ? '#f3f3f3' : '#FFF',
+    strokeColors: themeMode === 'dark' ? '#f9f9f9' : '#c1c1c1',
   },
 
   grid: {
@@ -76,10 +79,7 @@ const getDefaultOptions = (themeMode?: ApexThemeMode): ApexOptions => ({
 })
 
 const mergedOptions = computed(() =>
-  l.merge(
-    l.cloneDeep(props.options),
-    getDefaultOptions(theme.value as ApexThemeMode)
-  )
+  l.merge({}, getDefaultOptions(theme.value as ApexThemeMode), props.options)
 )
 
 const getHeightClass = computed(() =>
