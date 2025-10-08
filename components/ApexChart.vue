@@ -81,6 +81,10 @@ const mergedOptions = computed(() =>
     getDefaultOptions(theme.value as ApexThemeMode)
   )
 )
+
+const getHeightClass = computed(() =>
+  props.height ? `h-[${l.toNumber(props.height)}px]` : 'h-[250px]'
+)
 </script>
 
 <template>
@@ -93,9 +97,11 @@ const mergedOptions = computed(() =>
       :options="mergedOptions"
     />
 
-    <div v-if="loading" class="absolute inset-0 z-10">
-      <USkeleton :class="`h-[${height}px]`" />
-    </div>
+    <USkeleton
+      v-if="true"
+      :class="getHeightClass"
+      class="absolute inset-0 z-10 opacity-25"
+    />
   </div>
 </template>
 
