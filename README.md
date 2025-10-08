@@ -24,8 +24,6 @@ pnpm install
 pnpm dev
 ```
 
-Default dev port is configured in `nuxt.config.ts` (4500 in this project).
-
 Build / preview:
 
 ```bash
