@@ -55,10 +55,15 @@ const options = computed((): ApexOptions => {
       shared: true,
     },
 
+    // hide marker if too much entries to avoid cluttering
+    ...(l.size(uniqueDateEntries.value) > 20 ? { markers: { size: 0 } } : {}),
+
     xaxis: {
       type: 'datetime',
+      // hide labels if < 4 entries to avoid unnecessary labels
       labels: { show: l.size(uniqueDateEntries.value) > 3 ? true : false },
     },
+
     yaxis: {
       labels: { show: true },
       title: {
