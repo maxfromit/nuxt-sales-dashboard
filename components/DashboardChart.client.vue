@@ -15,8 +15,7 @@ const uniqueDateEntries = computed(() =>
   l
     .chain(props.sales)
     .map((sale) => sale?.date)
-    .orderBy()
-    .sortedUniq()
+    .uniq()
     .value()
 )
 
