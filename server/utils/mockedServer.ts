@@ -54,13 +54,6 @@ const salesData = [
     category: 'Одежда',
     customer_id: 3,
   },
-  {
-    id: 14,
-    date: '2025-09-02',
-    amount: 350,
-    category: 'Книги',
-    customer_id: 5,
-  },
 
   // 2025-09-03
   {
@@ -153,13 +146,7 @@ const salesData = [
   },
 
   // 2025-09-06
-  {
-    id: 22,
-    date: '2025-09-06',
-    amount: 1400,
-    category: 'Электроника',
-    customer_id: 2,
-  },
+
   {
     id: 23,
     date: '2025-09-06',
@@ -534,13 +521,6 @@ const salesData = [
     category: 'Одежда',
     customer_id: 4,
   },
-  {
-    id: 73,
-    date: '2025-09-18',
-    amount: 390,
-    category: 'Книги',
-    customer_id: 6,
-  },
 
   // 2025-09-19
   {
@@ -903,13 +883,7 @@ const salesData = [
   },
 
   // 2025-10-01
-  {
-    id: 122,
-    date: '2025-10-01',
-    amount: 1640,
-    category: 'Электроника',
-    customer_id: 3,
-  },
+
   {
     id: 123,
     date: '2025-10-01',
@@ -1000,20 +974,7 @@ const salesData = [
     category: 'Электроника',
     customer_id: 6,
   },
-  {
-    id: 135,
-    date: '2025-10-04',
-    amount: 740,
-    category: 'Одежда',
-    customer_id: 1,
-  },
-  {
-    id: 136,
-    date: '2025-10-04',
-    amount: 520,
-    category: 'Одежда',
-    customer_id: 2,
-  },
+
   {
     id: 137,
     date: '2025-10-04',
