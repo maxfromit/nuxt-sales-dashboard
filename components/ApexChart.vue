@@ -98,7 +98,7 @@ const getHeightClass = computed(() =>
     />
 
     <USkeleton
-      v-if="true"
+      v-if="loading"
       :class="getHeightClass"
       class="absolute inset-0 z-10 opacity-25"
     />
