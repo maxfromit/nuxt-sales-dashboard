@@ -47,6 +47,7 @@ const defaultOptions = computed(
       : {}),
 
     markers: {
+      size: 0,
       hover: { sizeOffset: 4 },
       strokeWidth: 1,
       colors: theme.value === 'dark' ? '#f3f3f3' : '#f1f1f1',
