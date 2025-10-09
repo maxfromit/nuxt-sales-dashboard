@@ -3,8 +3,8 @@ import type { CalendarDate } from '@internationalized/date'
 export type Period = 'daily' | 'weekly' | 'monthly'
 
 export type CalendarRange = {
-  start: CalendarDate | undefined
-  end: CalendarDate | undefined
+  start?: CalendarDate
+  end?: CalendarDate
 }
 
 export type Range = {
