@@ -1,7 +1,3 @@
-<script setup lang="ts">
-import DashboardPanel from '~/components/DashboardPanel.vue'
-</script>
-
 <template>
   <div class="flex flex-1 flex-col">
     <header class="p-4 sm:px-6 flex flex-row items-center justify-between">
@@ -17,3 +13,4 @@ import DashboardPanel from '~/components/DashboardPanel.vue'
     <DashboardPanel />
   </div>
 </template>
+``
