@@ -1131,7 +1131,7 @@ const fetchSales = async (query?: Query) => {
       resolve(true)
     }, 300)
   })
-  return { sales }
+  return sales
 }
 
 export { fetchSales }

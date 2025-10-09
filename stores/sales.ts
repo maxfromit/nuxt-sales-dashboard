@@ -19,7 +19,7 @@ export const useSalesStore = defineStore('sales', () => {
       },
     })
     loading.value = false
-    sales.value = data?.sales || []
+    sales.value = data || []
   }
 
   const stats = computed(() => {
