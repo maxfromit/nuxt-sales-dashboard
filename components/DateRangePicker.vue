@@ -10,15 +10,10 @@ import {
 } from '@internationalized/date'
 import type { Range, CalendarRange } from '~/types'
 
-const emptyRange = {
-  start: undefined,
-  end: undefined,
-}
-
-const selected = ref<CalendarRange>({ ...emptyRange })
+const selected = ref<CalendarRange>({})
 
 const reset = () => {
-  selected.value = l.cloneDeep(emptyRange)
+  selected.value = {}
 }
 
 const emit = defineEmits<{
