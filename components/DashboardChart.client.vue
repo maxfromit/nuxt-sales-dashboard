@@ -1,19 +1,16 @@
 <script setup lang="ts">
 import l from 'lodash'
 import type { ApexOptions } from 'apexcharts'
-import type { Sale } from '~/types'
 
-const props = defineProps<{
-  loading: boolean
-  sales: Sale[]
-}>()
+const store = useSalesStore()
+const { loading, sales } = storeToRefs(store)
 
 // Unique data entries:
 // used to create x-axis categories for each date in the sales data
 // hide x-axis labels when there are fewer than 4 dates to avoid unnecessary labels.
 const uniqueDateEntries = computed(() =>
   l
-    .chain(props.sales)
+    .chain(sales.value)
     .map((sale) => sale?.date)
     .uniq()
     .value()
@@ -23,7 +20,7 @@ const uniqueDateEntries = computed(() =>
 // first group by category, then sum amounts for each uniqueDateEntries within that category.
 const series = computed(() =>
   l
-    .chain(props.sales)
+    .chain(sales.value)
     .groupBy('category')
     .map((categoryItems, category) => {
       const categoryItemsByDate = l.groupBy(categoryItems, 'date')

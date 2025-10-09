@@ -1,26 +1,27 @@
-import type { Range, Sale } from '~/types'
+import type { CalendarRange } from '~/types'
 
 import l from 'lodash'
 
 export const useSalesStore = defineStore('sales', () => {
-  const sales = ref<Sale[]>([])
-  const loading = ref(false)
+  const range = ref<CalendarRange>({})
 
-  const fetchSales = async (dateRange?: Range) => {
-    loading.value = true
-    const data = await $fetch('/api/sales', {
-      query: {
-        ...(dateRange
-          ? {
-              ...(dateRange.start ? { startDate: dateRange.start } : {}),
-              ...(dateRange.end ? { endDate: dateRange.end } : {}),
-            }
-          : {}),
-      },
-    })
-    loading.value = false
-    sales.value = data || []
-  }
+  const rangeToString = computed(() => {
+    return {
+      ...(range.value?.start
+        ? {
+            startDate: range.value.start.toString(),
+            endDate: range.value?.end?.toString() ?? calendarToday.toString(),
+          }
+        : {}),
+    }
+  })
+
+  const { data, status } = useFetch('/api/sales', {
+    query: rangeToString,
+  })
+
+  const sales = computed(() => data.value || [])
+  const loading = computed(() => status.value === 'pending')
 
   const stats = computed(() => {
     const total = l.sumBy(sales.value, 'amount')
@@ -83,5 +84,5 @@ export const useSalesStore = defineStore('sales', () => {
     })
   })
 
-  return { sales: sales, fetchSales, stats, loading }
+  return { sales, stats, loading, range }
 })

@@ -1,24 +1,14 @@
 <script setup lang="ts">
-import type { Range } from '~/types'
-import { storeToRefs } from 'pinia'
 import l from 'lodash'
 
 const store = useSalesStore()
-const { loading, sales, stats } = storeToRefs(store)
-
-export type Stats = typeof stats.value
-
-await callOnce(() => store.fetchSales())
-
-const fetchSales = (range: Range) => {
-  store.fetchSales(range)
-}
+const { loading, sales } = storeToRefs(store)
 </script>
 
 <template>
   <div class="flex flex-1 flex-col">
     <div class="flex flex-row items-center p-4 sm:px-6">
-      <DateRangePicker @apply-date-range="fetchSales" />
+      <DateRangePicker />
     </div>
 
     <USeparator />
@@ -47,15 +37,15 @@ const fetchSales = (range: Range) => {
         />
 
         <template #content>
-          <DashboardStats :stats="stats" :loading="loading" />
+          <DashboardStats />
         </template>
       </UCollapsible>
 
       <!-- Stats for sm+ screens -->
 
-      <DashboardStats :stats="stats" :loading="loading" class="max-sm:hidden" />
+      <DashboardStats class="max-sm:hidden" />
 
-      <DashboardChart :loading="loading" :sales="sales" />
+      <DashboardChart />
     </div>
   </div>
 </template>

@@ -1,17 +1,14 @@
 <script setup lang="ts">
 import l from 'lodash'
-import type { Stats } from '~/components/DashboardPanel.vue'
 
-const props = defineProps<{
-  stats: Stats
-  loading: boolean
-}>()
+const store = useSalesStore()
+const { loading, stats } = storeToRefs(store)
 
 // Determine corner classes for grid items on lg screens (grid-cols-4)
 // it will be needed when stats cards became more than 4
 const getCornerClasses = (index: number) => {
   let classes = ''
-  const statsCount = l.size(props.stats)
+  const statsCount = l.size(stats.value)
   const itemsInLastRow = statsCount % 4
   const firstIndexLastRow = statsCount - itemsInLastRow
   const lastIndexLastRow = statsCount - 1

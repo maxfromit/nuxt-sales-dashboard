@@ -8,19 +8,13 @@ import {
   today,
   getLocalTimeZone,
 } from '@internationalized/date'
-import type { Range, CalendarRange } from '~/types'
 
-const selected = ref<CalendarRange>({})
+const store = useSalesStore()
+const { range: selected } = storeToRefs(store)
 
 const reset = () => {
   selected.value = {}
 }
-
-const emit = defineEmits<{
-  (e: 'apply-date-range', range: Range): void
-}>()
-
-const calendarToday = today(getLocalTimeZone())
 
 //computed to calculate today and compare it with the end of week/month to limit end dates in predefined range
 const predefinedRanges = computed(() => [
@@ -65,18 +59,6 @@ const isPredefinedRangeSelected = (range: PredefinedRange) => {
     selected.value.end.compare(range.lastDay) === 0
   )
 }
-
-watch(
-  () => selected.value,
-  () => {
-    const rangeToString = {
-      start: selected.value?.start?.toString() ?? null,
-      end: selected.value?.end?.toString() ?? calendarToday.toString(),
-    }
-    emit('apply-date-range', rangeToString)
-  },
-  { immediate: true, deep: true }
-)
 </script>
 
 <template>
