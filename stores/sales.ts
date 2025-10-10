@@ -4,7 +4,6 @@ import l from 'lodash'
 
 export const useSalesStore = defineStore('sales', () => {
   const range = ref<CalendarRange>({})
-
   const rangeToString = computed(() => {
     return {
       ...(range.value?.start
@@ -19,7 +18,6 @@ export const useSalesStore = defineStore('sales', () => {
   const { data, status } = useFetch('/api/sales', {
     query: rangeToString,
   })
-
   const sales = computed(() => data.value || [])
   const loading = computed(() => status.value === 'pending')
 
