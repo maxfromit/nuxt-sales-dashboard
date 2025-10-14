@@ -2,7 +2,7 @@
 
 ## description
 
-Interactive analytics dashboard built with Nuxt 3 and TypeScript. The app visualizes sales data by category over a selectable period and uses a small server route that returns mock data for the UI.
+Interactive analytics dashboard built with Nuxt 3 and TypeScript. This repository is a frontend test assignment and requires using Pinia for state management. The app visualizes sales data by category over a selectable period and uses a small server route that returns mock data for the UI.
 
 ## Tech stack
 
