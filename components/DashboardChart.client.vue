@@ -48,9 +48,20 @@ const options = computed((): ApexOptions => {
     chart: {
       id: 'sales',
     },
+
+    legend: {
+      formatter: (seriesName, opts) => [
+        $t(`dashboard.chart.xaxis.${seriesName}`),
+      ],
+    },
     tooltip: {
       enabled: true,
       shared: true,
+      y: {
+        title: {
+          formatter: (seriesName) => $t(`dashboard.chart.xaxis.${seriesName}`),
+        },
+      },
     },
 
     // hide marker if too much entries to avoid cluttering
@@ -78,7 +89,7 @@ const options = computed((): ApexOptions => {
     yaxis: {
       labels: { show: true },
       title: {
-        text: 'Доход, ₽',
+        text: $t('dashboard.chart.yaxisTitle'),
       },
     },
   }

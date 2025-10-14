@@ -5,4 +5,8 @@ export default defineAppConfig({
       secondary: 'violet',
     },
   },
+
+  head: {
+    title: 'Продажи',
+  },
 })

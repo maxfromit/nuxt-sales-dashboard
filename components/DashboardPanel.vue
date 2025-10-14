@@ -17,14 +17,14 @@ const { loading, sales } = storeToRefs(store)
       v-if="!loading && l.isEmpty(sales)"
       class="p-4 text-center font-bold text-sm text-muted-foreground"
     >
-      В выбранные даты нет данных для отображения.
+      {{ $t('dateRangePicker.noData') }}
     </div>
 
     <div class="flex flex-col gap-4 sm:gap-6 flex-1 overflow-y-auto p-4 sm:p-6">
       <!--Stats collapse for mobile screens -->
       <UCollapsible class="sm:hidden">
         <UButton
-          label="Статистика"
+          :label="$t('dashboard.stats')"
           color="neutral"
           variant="outline"
           trailing-icon="i-lucide-chevron-down"
@@ -42,10 +42,10 @@ const { loading, sales } = storeToRefs(store)
       </UCollapsible>
 
       <!-- Stats for sm+ screens -->
-
       <DashboardStats class="max-sm:hidden" />
 
       <DashboardChart />
     </div>
   </div>
 </template>
+v-if="!loading && l.isEmpty(sales)"

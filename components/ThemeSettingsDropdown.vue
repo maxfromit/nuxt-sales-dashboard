@@ -3,6 +3,7 @@ import type { DropdownMenuItem } from '@nuxt/ui'
 import l from 'lodash'
 
 const colorMode = useColorMode()
+const { locales, setLocale } = useI18n()
 
 const state = useLocalStorage('appearance', {
   primary: 'blue',
@@ -20,36 +21,38 @@ watch(
   { immediate: true, deep: true }
 )
 
-const colors = [
-  { label: 'Синий', value: 'blue' },
-  { label: 'Красный', value: 'red' },
-  { label: 'Зелёный', value: 'green' },
-  { label: 'Янтарный', value: 'amber' },
-  { label: 'Бирюзовый', value: 'teal' },
+const primaries = [
+  { labelKey: 'colors.blue', value: 'blue' },
+  { labelKey: 'colors.red', value: 'red' },
+  { labelKey: 'colors.green', value: 'green' },
+  { labelKey: 'colors.amber', value: 'amber' },
+  { labelKey: 'colors.teal', value: 'teal' },
 ]
 
 const secondaries = [
-  { label: 'Фиолетовый', value: 'violet' },
-  { label: 'Нейтральный', value: 'neutral' },
-  { label: 'Желтый', value: 'yellow' },
-  { label: 'Пурпурный', value: 'purple' },
-  { label: 'Лаймовый', value: 'lime' },
+  { labelKey: 'colors.violet', value: 'violet' },
+  { labelKey: 'colors.neutral', value: 'neutral' },
+  { labelKey: 'colors.yellow', value: 'yellow' },
+  { labelKey: 'colors.purple', value: 'purple' },
+  { labelKey: 'colors.lime', value: 'lime' },
 ]
+
+const { t } = useI18n()
 
 const items = computed<DropdownMenuItem[][]>(() => [
   [
     {
-      label: 'Цвета проекта',
+      label: t('settings_extra.colorsTitle'),
       icon: 'i-lucide-palette',
       children: [
         {
-          label: 'Главный',
+          label: t('settings.primary'),
           content: {
             align: 'center',
             collisionPadding: 16,
           },
-          children: l.map(colors, (color) => ({
-            label: color.label,
+          children: l.map(primaries, (color) => ({
+            label: $t(color.labelKey),
             checked: state.value.primary === color.value,
             type: 'checkbox',
             onSelect: (e) => {
@@ -59,13 +62,13 @@ const items = computed<DropdownMenuItem[][]>(() => [
           })),
         },
         {
-          label: 'Вторичный',
+          label: t('settings.secondary'),
           content: {
             align: 'end',
             collisionPadding: 16,
           },
           children: l.map(secondaries, (color) => ({
-            label: color.label,
+            label: $t(color.labelKey),
             type: 'checkbox',
             checked: state.value.secondary === color.value,
             onSelect: (e) => {
@@ -78,11 +81,11 @@ const items = computed<DropdownMenuItem[][]>(() => [
     },
 
     {
-      label: 'Тема',
+      label: t('settings_extra.theme'),
       icon: 'i-lucide-sun-moon',
       children: [
         {
-          label: 'Светлая',
+          label: t('settings.light'),
           icon: 'i-lucide-sun',
           type: 'checkbox',
           checked: colorMode.value === 'light',
@@ -92,7 +95,7 @@ const items = computed<DropdownMenuItem[][]>(() => [
           },
         },
         {
-          label: 'Темная',
+          label: t('settings.dark'),
           icon: 'i-lucide-moon',
           type: 'checkbox',
           checked: colorMode.value === 'dark',
@@ -102,6 +105,20 @@ const items = computed<DropdownMenuItem[][]>(() => [
           },
         },
       ],
+    },
+
+    {
+      label: $t('settings.language'),
+      icon: 'i-lucide-globe',
+      children: l.map(locales.value, (locale) => ({
+        label: locale?.name,
+        checked: state.value.primary === locale.value,
+        type: 'checkbox',
+        onSelect: (e) => {
+          e.preventDefault()
+          setLocale(locale.code)
+        },
+      })),
     },
   ],
 ])

@@ -3,6 +3,7 @@ import type { ApexOptions } from 'apexcharts'
 import VueApexCharts, { type VueApexChartsComponent } from 'vue3-apexcharts'
 import l from 'lodash'
 import ru from 'apexcharts/dist/locales/ru.json'
+import en from 'apexcharts/dist/locales/en.json'
 
 const props = defineProps<{
   type: NonNullable<ApexOptions['chart']>['type']
@@ -15,13 +16,14 @@ const props = defineProps<{
 const apexChartInstance = ref<VueApexChartsComponent | null>(null)
 
 const colorMode = useColorMode()
+const { locale } = useI18n()
 const theme = computed(() => colorMode.preference)
 
 const defaultOptions = computed(
   (): ApexOptions => ({
     chart: {
-      locales: [ru],
-      defaultLocale: 'ru',
+      locales: [ru, en],
+      defaultLocale: locale.value,
       type: props.type,
       zoom: {
         enabled: false,

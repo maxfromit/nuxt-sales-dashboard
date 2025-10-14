@@ -12,6 +12,10 @@ import {
 const store = useSalesStore()
 const { range: selected } = storeToRefs(store)
 
+const { localeProperties } = useI18n()
+
+const language = computed(() => localeProperties?.value?.language || 'en-US')
+
 const reset = () => {
   selected.value = {}
 }
@@ -19,20 +23,20 @@ const reset = () => {
 //computed to calculate today and compare it with the end of week/month to limit end dates in predefined range
 const predefinedRanges = computed(() => [
   {
-    label: 'Сегодня',
+    label: $t('dateRangePicker.today'),
     firstDay: calendarToday.copy(),
     lastDay: calendarToday.copy(),
   },
   {
-    label: 'Неделя',
-    firstDay: startOfWeek(calendarToday, ruLocale).copy(),
+    label: $t('dateRangePicker.week'),
+    firstDay: startOfWeek(calendarToday, language.value).copy(),
     lastDay:
-      endOfWeek(calendarToday, ruLocale).compare(calendarToday) <= 0
-        ? endOfWeek(calendarToday, ruLocale).copy()
+      endOfWeek(calendarToday, language.value).compare(calendarToday) <= 0
+        ? endOfWeek(calendarToday, language.value).copy()
         : calendarToday.copy(),
   },
   {
-    label: 'Месяц',
+    label: $t('dateRangePicker.month'),
     firstDay: startOfMonth(calendarToday).copy(),
     lastDay:
       endOfMonth(calendarToday).compare(calendarToday) <= 0
@@ -70,17 +74,23 @@ const isPredefinedRangeSelected = (range: PredefinedRange) => {
       class="data-[state=open]:bg-elevated group"
     >
       <span class="truncate">
-        <template v-if="!selected?.start && !selected?.end"
-          >Весь период</template
-        >
+        <template v-if="!selected?.start && !selected?.end">
+          {{ $t('dateRangePicker.allPeriod') }}
+        </template>
         <template v-else>
-          <RuNuxtTime
+          <NuxtTime
             v-if="selected?.start?.copy()"
             :datetime="selected?.start?.copy().toString()"
+            :locale="language"
+            date-style="medium"
           />
           -
-          <RuNuxtTime
-            :datetime="selected?.end?.toString() ?? calendarToday.toString()"
+          <NuxtTime
+            :datetime="
+              selected?.end?.copy().toString() ?? calendarToday.toString()
+            "
+            :locale="language"
+            date-style="medium"
           />
         </template>
       </span>
@@ -128,7 +138,7 @@ const isPredefinedRangeSelected = (range: PredefinedRange) => {
       <div class="flex flex-1 justify-center">
         <UButton
           v-if="selected?.start || selected?.end"
-          label="Сбросить"
+          :label="$t('dateRangePicker.reset')"
           icon="i-lucide-eraser"
           variant="ghost"
           color="neutral"

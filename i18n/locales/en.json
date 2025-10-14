@@ -1,0 +1,57 @@
+{
+  "app": {
+    "title": "Sales",
+    "description": "Interactive analytics dashboard built with Nuxt 3 and TypeScript.",
+    "content": "Interactive analytics dashboard built with Nuxt 3. The app visualizes sales data managed by Pinia by category over a selectable period and uses a small server route that returns mock data for the UI."
+  },
+  "dateRangePicker": {
+    "allPeriod": "All period",
+    "today": "Today",
+    "week": "Week",
+    "month": "Month",
+    "reset": "Reset",
+    "noData": "No data available for the selected dates."
+  },
+  "dashboard": {
+    "sales": "Sales",
+    "stats": "Statistics",
+    "totalRevenue": "Total revenue",
+    "ordersCount": "Orders count",
+    "averageCheck": "Average check",
+    "uniqueUsers": "Unique users",
+    "chart": {
+      "yaxisTitle": "Revenue, ₽",
+      "xaxis": {
+        "Электроника": "Electronics",
+        "Одежда": "Clothing",
+        "Книги": "Books"
+      }
+}
+  },
+  "settings": {
+    "title": "Settings",
+    "primary": "Primary",
+    "secondary": "Secondary",
+    "light": "Light",
+    "dark": "Dark",
+    "language": "Language"
+  }
+  ,
+  "settings_extra": {
+    "colorsTitle": "Project colors",
+    "theme": "Theme"
+  }
+  ,
+  "colors": {
+    "blue": "Blue",
+    "red": "Red",
+    "green": "Green",
+    "amber": "Amber",
+    "teal": "Teal",
+    "violet": "Violet",
+    "neutral": "Neutral",
+    "yellow": "Yellow",
+    "purple": "Purple",
+    "lime": "Lime"
+  }
+}

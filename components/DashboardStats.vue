@@ -57,7 +57,7 @@ const getCornerClasses = (index: number) => {
           class="bg-primary/10 ring ring-inset ring-primary/25"
         />
         <div class="font-normal text-muted text-xs uppercase text-pretty">
-          {{ stat?.label }}
+          {{ $t(stat.labelKey) }}
         </div>
         <div class="text-2xl font-semibold text-highlighted">
           {{

@@ -38,7 +38,7 @@ export const useSalesStore = defineStore('sales', () => {
 
     type StatItem = {
       key: StatKey
-      label: string
+      labelKey: string
       value: number | null | string
       prefix?: string
       icon: string
@@ -48,27 +48,27 @@ export const useSalesStore = defineStore('sales', () => {
     const statsBackbone: StatItem[] = [
       {
         key: 'total',
-        label: 'Общий доход',
+        labelKey: 'dashboard.totalRevenue',
         value: null,
         prefix: '₽',
         icon: 'i-lucide-badge-russian-ruble',
       },
       {
         key: 'count',
-        label: 'Количество заказов',
+        labelKey: 'dashboard.ordersCount',
         value: null,
         icon: 'i-lucide-shopping-cart',
       },
       {
         key: 'average',
-        label: 'Средний чек',
+        labelKey: 'dashboard.averageCheck',
         value: null,
         prefix: '₽',
         icon: 'i-lucide-receipt-russian-ruble',
       },
       {
         key: 'uniqueCustomers',
-        label: 'Уникальные пользователи',
+        labelKey: 'dashboard.uniqueUsers',
         value: null,
         icon: 'i-lucide-users-round',
       },
