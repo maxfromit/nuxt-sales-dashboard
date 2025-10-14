@@ -19,7 +19,5 @@ export default defineNuxtConfig({
     defaultLocale: 'en',
   },
 
-  devServer: {
-    port: 4500,
-  },
+
 })
