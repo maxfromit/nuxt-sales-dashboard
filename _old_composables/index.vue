@@ -15,7 +15,7 @@ import DashboardPanel from '~/components/DashboardPanel.vue'
           Composable
         </NuxtLink>
       </div>
-      <ThemeSettingsDropdown />
+      <SettingsDropdown />
     </header>
 
     <USeparator />

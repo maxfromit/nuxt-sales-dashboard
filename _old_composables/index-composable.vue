@@ -12,7 +12,7 @@ import DashboardPanel from '~/components/DashboardPanel.vue'
           Index
         </NuxtLink>
       </div>
-      <ThemeSettingsDropdown />
+      <SettingsDropdown />
     </header>
 
     <USeparator />

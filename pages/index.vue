@@ -5,7 +5,7 @@
         <UIcon name="i-lucide-chart-no-axes-column" class="text-secondary" />
         <div class="text-xl font-semibold">{{ $t('app.title') }}</div>
       </div>
-      <ThemeSettingsDropdown />
+      <UserSettingsDropdown />
     </header>
 
     <USeparator />
